@@ -258,7 +258,200 @@ wx_instance = wx(sn, secret)
  'text': '女子编程真的不如男？真相告诉我们这不过是直男癌的自嗨', # 链接分享为文章标题
  'url': 'http://mp.weixin.qq.com/s?__biz=MjM5MjM3NzQwMA==&amp;mid=2650984008&amp;idx=1&amp;sn=4839f594584ed03f2abbca996b231c00&amp;chksm=bd51511f8a26d809852552ba535494f2e2f81620cfa760e4801e27daf65eb255746021992e87&amp;mpshare=1&amp;scene=1&amp;srcid=0811vsKfCAiDojl7eE0Im3VE#rd'}  # 卡券等该参数为https://support.weixin.qq.com/cgi-bin*****
  
+ # 输出群文本
+{'NickName': 'ooo',
+ 'chatroomName': 'ooo',
+ 'chatroomQuanPin': 'ooo',
+ 'fromDisplayName': '1111',
+ 'fromNickName': '老衲有理了',
+ 'fromUserName': '@d91be73042eeabac073d993c489161f0',
+ 'atSelf': False,
+ 'isgroup': False,
+ 'msgId': '6911839328836778181',
+ 'msgType': 'Text',
+ 'pyQuanPin': 'ooo',
+ 't': 1502441016,
+ 'text': '1',
+ 'username': '@@32f23df58fb1da775c1c7811e43b848b3faacb5c144fc3ca2425530327f8368f'}
  
+ # 输出群图片
+ {'NickName': 'ooo',
+ 'atSelf': False,
+ 'chatroomName': 'ooo',
+ 'chatroomQuanPin': 'ooo',
+ 'filename': '170811-170804.png',
+ 'fromDisplayName': '1111',
+ 'fromNickName': '老衲有理了',
+ 'fromUserName': '@d91be73042eeabac073d993c489161f0',
+ 'imgHeight': 150,
+ 'imgWidth': 125,
+ 'isgroup': True,
+ 'msgId': '8714147927345821492',
+ 'msgType': 'Picture',
+ 'pyQuanPin': 'ooo',
+ 't': 1502442484,
+ 'text': '',
+ 'username': '@@32f23df58fb1da775c1c7811e43b848b3faacb5c144fc3ca2425530327f8368f'}
+
+ # 输出群视频
+ {'NickName': 'ooo',
+ 'atSelf': False,
+ 'chatroomName': 'ooo',
+ 'chatroomQuanPin': 'ooo',
+ 'filename': '170811-171217.mp4',
+ 'fromDisplayName': '1111',
+ 'fromNickName': '老衲有理了',
+ 'fromUserName': '@d91be73042eeabac073d993c489161f0',
+ 'isgroup': True,
+ 'msgId': '4281900100578744004',
+ 'msgType': 'Video',
+ 'playLength': 6,
+ 'pyQuanPin': 'ooo',
+ 't': 1502442737,
+ 'text': '',
+ 'username': '@@32f23df58fb1da775c1c7811e43b848b3faacb5c144fc3ca2425530327f8368f'}
+ 
+ # 输出群附件
+ {'NickName': 'ooo',
+ 'atSelf': False,
+ 'chatroomName': 'ooo',
+ 'chatroomQuanPin': 'ooo',
+ 'fileSize': '120477',
+ 'filename': '项目.mp',
+ 'fromDisplayName': '1111',
+ 'fromNickName': '老衲有理了',
+ 'fromUserName': '@d91be73042eeabac073d993c489161f0',
+ 'isgroup': True,
+ 'msgId': '5398171740057203265',
+ 'msgType': 'Attachment',
+ 'pyQuanPin': 'ooo',
+ 't': 1502442826,
+ 'text': '',
+ 'username': '@@32f23df58fb1da775c1c7811e43b848b3faacb5c144fc3ca2425530327f8368f'}
+ 
+ # 输出群语音
+ {'NickName': 'ooo',
+ 'atSelf': False,
+ 'chatroomName': 'ooo',
+ 'chatroomQuanPin': 'ooo',
+ 'filename': '170811-171453.mp3',
+ 'fromDisplayName': '1111',
+ 'fromNickName': '老衲有理了',
+ 'fromUserName': '@d91be73042eeabac073d993c489161f0',
+ 'isgroup': True,
+ 'msgId': '4167799924484047334',
+ 'msgType': 'Recording',
+ 'pyQuanPin': 'ooo',
+ 't': 1502442893,
+ 'text': '',
+ 'username': '@@32f23df58fb1da775c1c7811e43b848b3faacb5c144fc3ca2425530327f8368f',
+ 'voiceLength': 2700}
+ 
+ #输出群红包[通知]
+ {'NickName': 'ooo',
+ 'atSelf': False,
+ 'chatroomName': 'ooo',
+ 'chatroomQuanPin': 'ooo',
+ 'fromDisplayName': 'weslack-te',
+ 'fromNickName': 'weslack-test',
+ 'fromUserName': '@2e20efade37766af8a172bf5ad6aad1135f3e79a70fd9df71f005d2ed52d9dee',
+ 'isgroup': True,
+ 'msgId': '7068968337958789656',
+ 'msgType': 'Note',
+ 'pyQuanPin': 'ooo',
+ 't': 1502442944,
+ 'text': '收到红包，请在手机上查看',
+ 'username': '@@32f23df58fb1da775c1c7811e43b848b3faacb5c144fc3ca2425530327f8368f'}
+ 
+ #输出群名片
+ {'NickName': 'ooo',
+ 'atSelf': False,
+ 'chatroomName': 'ooo',
+ 'chatroomQuanPin': 'ooo',
+ 'fromDisplayName': '1111',
+ 'fromNickName': '老衲有理了',
+ 'fromUserName': '@d91be73042eeabac073d993c489161f0',
+ 'isgroup': True,
+ 'msgId': '2698284051410254223',
+ 'msgType': 'Card',
+ 'pyQuanPin': 'ooo',
+ 't': 1502443048,
+ 'text': {'Alias': '',
+          'AttrStatus': 32,
+          'City': '中国',
+          'Content': '',
+          'NickName': '阿彪',
+          'OpCode': 0,
+          'Province': '江西',
+          'QQNum': 0,
+          'Scene': 17,
+          'Sex': 1,
+          'Signature': '',
+          'Ticket': '',
+          'UserName': '@ab03c03893ec0fdcc152ec5237d3350dd3b6e5cf71d15049b54a9891099e263b',
+          'VerifyFlag': 0},
+ 'username': '@@32f23df58fb1da775c1c7811e43b848b3faacb5c144fc3ca2425530327f8368f'}
+ 
+ #输出群分享
+ {'NickName': 'ooo',
+ 'atSelf': False,
+ 'chatroomName': 'ooo',
+ 'chatroomQuanPin': 'ooo',
+ 'fromDisplayName': '1111',
+ 'fromNickName': '老衲有理了',
+ 'fromUserName': '@d91be73042eeabac073d993c489161f0',
+ 'isgroup': True,
+ 'msgId': '5587398698639216514',
+ 'msgType': 'Sharing',
+ 'pyQuanPin': 'ooo',
+ 'raw': '<?xml version="1.0"?>\n'
+        '<msg>\n'
+        '\t<appmsg appid="wx726f306f716ebe3f" sdkver="0">\n'
+        '\t\t<title>一个小学生的中年危机</title>\n'
+        '\t\t<des>一个小学生的中年危机</des>\n'
+        '\t\t<action>view</action>\n'
+        '\t\t<type>5</type>\n'
+        '\t\t<showtype>0</showtype>\n'
+        '\t\t<content />\n'
+        '\t\t<url>http://www.pingwest.com/?p=128682</url>\n'
+        '\t\t<dataurl />\n'
+        '\t\t<lowurl />\n'
+        '\t\t<lowdataurl />\n'
+        '\t\t<recorditem><![CDATA[]]></recorditem>\n'
+        '\t\t<thumburl />\n'
+        '\t\t<extinfo />\n'
+        '\t\t<sourceusername />\n'
+        '\t\t<sourcedisplayname />\n'
+        '\t\t<commenturl />\n'
+        '\t\t<appattach>\n'
+        '\t\t\t<totallen>0</totallen>\n'
+        '\t\t\t<attachid />\n'
+        '\t\t\t<emoticonmd5 />\n'
+        '\t\t\t<fileext />\n'
+        '\t\t\t'
+        '<cdnthumburl>30580201000451304f02010002040ff7803d02033d0af50204764c977b0204598d708f042d6175706170706d73675f323430666437313736646437646165305f313530323434313631353334325f383633320201000201000400</cdnthumburl>\n'
+        '\t\t\t<cdnthumblength>31649</cdnthumblength>\n'
+        '\t\t\t<cdnthumbheight>150</cdnthumbheight>\n'
+        '\t\t\t<cdnthumbwidth>290</cdnthumbwidth>\n'
+        '\t\t\t<aeskey>ede19cf132504961ba35c04e81735199</aeskey>\n'
+        '\t\t\t'
+        '<cdnthumbaeskey>ede19cf132504961ba35c04e81735199</cdnthumbaeskey>\n'
+        '\t\t\t<encryver>1</encryver>\n'
+        '\t\t</appattach>\n'
+        '\t</appmsg>\n'
+        '\t<fromusername>Vicksml</fromusername>\n'
+        '\t<scene>0</scene>\n'
+        '\t<appinfo>\n'
+        '\t\t<version>2</version>\n'
+        '\t\t<appname>PingWest品玩</appname>\n'
+        '\t</appinfo>\n'
+        '\t<commenturl></commenturl>\n'
+        '</msg>\n'
+        '\n',
+ 't': 1502443079,
+ 'text': '一个小学生的中年危机',
+ 'url': 'http://www.pingwest.com/?p=128682',
+ 'username': '@@32f23df58fb1da775c1c7811e43b848b3faacb5c144fc3ca2425530327f8368f'}
 
     以上body数据均经过fernet加密,解密方法为
     from cryptography.fernet import Fernet
@@ -274,6 +467,7 @@ wx_instance.get_chatmsg(starttime=123, endtime=456, limit=100)
 # endtime: 结束时间戳
 # limit: 返回数限制
 # 以上默认为最近1小时,100条数据
+
 
 返回格式为列表,列表内容与实时推送格式一致
 ```
