@@ -94,8 +94,8 @@ wx_instance = wx(sn, secret)
         "text": "xx", # 消息文本内容
         "isAt": True, # 是否是@事件
         "atSelf": False, # 是否@自己
-        "atWho": "dwe", # 被@人昵称
-        "atWhoRemark": "sss", # 被@人备注
+        "atWho": "dwe", # 被@人昵称 [暂未实现]
+        "atWhoRemark": "sss", # 被@人备注 [暂未实现]
         "isgroup": True, # 是否为群聊
         "selfDisplayName": "", # 机器人在群内昵称
         "chatroomName":"", # 群聊名称
