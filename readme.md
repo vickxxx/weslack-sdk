@@ -77,7 +77,7 @@ wx_instance = wx(sn, secret)
         "NickName": "xx", # 群事件涉及人昵称,可能为空
         "DisplayName": "", # 群事件涉及人群内昵称,可能为空
         "RemarkName": "", # 群事件涉及人备注名,可能为空
-        "event": "add"(加入)|"remove"(退出)等,  # 群事件类型
+        "event": "add"(加入)等,  # 群事件类型
         "t": 12234123431, # 群事件时间戳
     }
 
