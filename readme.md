@@ -25,7 +25,7 @@ wx_instance = wx(sn, secret, weslack_url)
 ### 发送消息
 
 ```python
-    wx_instance.send_msg(wx_name=None, remark_name=None,                              isgroup=True, text=None,
+    wx_instance.send_msg(wx_name=None, remark_name=None, isgroup=True, text=None,
                         filepath=None)
     # wx_name 接收人昵称 | 非必需
     # remark_name 备注名称,群为机器人在群内的昵称| 非必需,与wx_name至少一
@@ -42,7 +42,7 @@ wx_instance = wx(sn, secret, weslack_url)
            'errcode': 0,
            'errmsg': '成功'}
     # 异常:
-        {"errcode": -4, "errmsg": "text,filepath不能全部为空"}
+        {"errcode": （错误码负值）-4, "errmsg": (错误原因)"text,filepath不能全部为空"}
 ```
 
 ### 获取好友信息
@@ -63,8 +63,10 @@ wx_instance = wx(sn, secret, weslack_url)
     # 获取机器人所在群昵称列表,失败返回[]
     wx_instance.chatrooms
     # 所有群聊信息字典,以机器人所在群昵称为key,value(字典)NickName(昵称),UserName(临时用户id),MemberList(成员列表),IsAdmin(机器人是否管理员,目测已废),MemberCount(成员数),selfDisplayName(机器人所在群昵称)
-    wx_instance.get_chatroom(nick_name="",remark_name="")
-    # 返回群聊信息,nick_name为群昵称,remark_name为机器人所在群昵称,无参数调用返回当前机器人信息
+    wx_instance.get_chatroom(self, nick_name="", self_remark_name="", username="")
+    # 返回群聊信息,nick_name为群昵称,
+    # self_remark_name,
+    # 无参数调用返回[],正常返回群信息列表,个数为1时群唯一
 ```
 
 ### 消息webhook
@@ -73,7 +75,7 @@ wx_instance = wx(sn, secret, weslack_url)
     wx_instance.get_chatroom_callback()
     # 群事件注册回调地址,未注册返回""
     wx_instance.set_chatroom_callback(url)
-    # 设置群事件回调地址,成功返回0
+    # 设置群事件回调地址,成功返回0(str)
     wx_instance.get_chat_callback()
     # 实时聊天推送地址,未设置为空
     wx_instance.set_chat_callback(url)
@@ -82,384 +84,166 @@ wx_instance = wx(sn, secret, weslack_url)
     群事件webhook请求信息:
     方法: POST
     body: {
-        "NickName": "xx", # 群事件涉及人昵称,可能为空
-        "DisplayName": "", # 群事件涉及人群内昵称,可能为空
-        "RemarkName": "", # 群事件涉及人备注名,可能为空
-        "event": "add"(加入)等,  # 群事件类型
-        "t": 12234123431, # 群事件时间戳
+        "isgroup": true, # 是否群消息
+        "atSelf": false,
+        "msgId": "8758474135318225246", # 消息id
+        "text": "\"rrrrr\"邀请\"这一年，十八岁\"加入了群聊",
+        "event": "NewInRoom", # 事件,新人加入(NewInRoom)|机器人被加入(selfInNewRoom)
+        "selfRemarkName": "", # 机器人号群内昵称
+        "Username": "@@a39be3d32b32a7a4abc11ac365aeaadbf26ff4823db280750dacfcc30b5597d5",
+        "inviter": "rrrrr", # 邀请人群内昵称(优先)或昵称
+        "chatroomQuanPin": "oooq", # 聊天群全拼
+        "fromDisplayName": "",
+        "t": 1503283124,
+        "fromUserName": "@599a093641f6e16e3e159d13f20700d8f0e5ded99007f341497e15a2aa7b1677",
+        "chatroomName": "oooq",  # 聊天名称
+        "fromNickName": "POC Bot",
+        "msgType": "Note",
+        "newNicknames": [  # 新加入人昵称,列表
+            "这一年，十八岁"
+        ]
     }
 
     实时聊天推送:
     方法: POST
-    body: {
-        "NickName": "xx", # 群聊发送人昵称
-        "DisplayName": "", # 群聊群内昵称,可能为空
-        "RemarkName": "", # 群聊备注名（如果是好友）,可能为空 【暂未实现】
-        "t": 12234123431, # 群事件时间戳
-        "msgId": 12123, # 消息id
-        "msgType": "Text" # | "Recording" | "Picture" |"Video" |"Attachment" |"Note"
-            # "Card"(名片)|"Sharing", # 消息类型
-        "text": "xx", # 消息文本内容
-        "isAt": True, # 是否是@事件
-        "atSelf": False, # 是否@自己
-        "atWho": "dwe", # 被@人昵称 [暂未实现]
-        "atWhoRemark": "sss", # 被@人备注 [暂未实现]
-        "isgroup": True, # 是否为群聊
-        "selfDisplayName": "", # 机器人在群内昵称
-        "chatroomName":"", # 群聊名称
+    body: 
+        # 文本
+        {
+        "isgroup": true,  # 是否群
+        "atSelf": false, # 是否at自己
+        "msgId": "787689431542809558",
+        "text": "vickxxx\n－\n😈 在 [weslack-sdk]项目中推送了:\n[修改发送消息描述]\n新增了[0]个文件\n删除了[0]个文件\n修改了[1]个文件\n详情请访问【Github】:http://t.cn/R9uMeId", # 文本内容 包括系统默认表情 'text': '[微笑]'
+        "selfRemarkName": "", # 机器号所在群备注
+        "chatroomName": "Ein+WeSlack", # 群昵称
+        "msgType": "Text", # 消息类型
+        "fromDisplayName": "",
+        "fromUserName": "@8b224d5aaf6a765250f1a9dc3910ddd2aacc3937982502aaf780088a0ccfc402",
+        "t": 1503282480, # 消息时间戳
+        "chatroomQuanPin": "EinWeSlack",
+        "fromNickName": "weslack",  # 消息发送者
+        "Username": "@@4c728297d3d6aa9666f9f0cc2322e2f6397520782fea49f51d4c1e5eaca65440" # 群聊Username(临时id)
     }
 	
-	# 输出信息,文本
-{'NickName': '老衲有理了',
- 'RemarkName': '',
- 'Username': '@d91be73042eeabac073d993c489161f0',
- 'msgId': '1912272070477312894',
- 'msgType': 'Text', 
- 'pyQuanPin': 'laonayoulile',
- 't': 1502422012,
- 'text': '1'} # 包括系统默认表情 'text': '[微笑]'
 
- # 输出信息,语音
+    # 群语音,除文本消息外附加字段以及区别字段
+    
+    {
+    'filename': '170811-113344.mp3', # 音频文件名称
+    'msgType': 'Recording', # 类型
+    'text': '', # 为空
+    'voiceLength': 3180} # 声音长度,单位ms
  
- {'NickName': '老衲有理了',
- 'RemarkName': '',
- 'Username': '@d91be73042eeabac073d993c489161f0',
- 'filename': '170811-113344.mp3',
- 'pyQuanPin': 'laonayoulile',
- 'msgId': '8878382022220349020',
- 'msgType': 'Recording',
- 't': 1502422424,
- 'text': '',
- 'voiceLength': 3180}
+    # 图片,除文本消息外附加字段以及区别字段
+    {
+    'filename': '170811-114541.png',
+    'imgHeight': 150, # 图片高
+    'imgWidth': 125, # 图片宽
+    'msgType': 'Picture',
+    'text': ''} # 包括系统购买表情包,该文件无法成功下载, 用户自定义表情,可以下载
  
- # 输出信息, 图片
- {'NickName': '老衲有理了',
- 'RemarkName': '',
- 'Username': '@d91be73042eeabac073d993c489161f0',
- 'filename': '170811-114541.png',
- 'imgHeight': 150,
- 'imgWidth': 125,
- 'msgId': '5255827694134084268',
- 'msgType': 'Picture',
- 'pyQuanPin': 'laonayoulile',
- 't': 1502423141,
- 'text': ''} # 包括系统购买表情包,该文件无法成功下载, 用户自定义表情,可以下载
+    # 视频,除文本消息外附加字段以及区别字段
  
- # 输出视频
+    {
+    'filename': '170811-122407.mp4',
+    'msgType': 'Video',
+    'playLength': 6, # 视频长度 单位s
+    'text': ''}
  
-{'NickName': '老衲有理了',
- 'RemarkName': '',
- 'Username': '@d91be73042eeabac073d993c489161f0',
- 'filename': '170811-122407.mp4',
- 'msgId': '1086854517769505496',
- 'msgType': 'Video',
- 'playLength': 6,
- 'pyQuanPin': 'laonayoulile',
- 't': 1502425447,
- 'text': ''}
+    # 附件,除文本消息外附加字段以及区别字段
+    
+    {
+    'fileSize': '120477', # 文件大小
+    'filename': '项目.mp', # 文件名称
+    'msgType': 'Attachment',
+    'text': ''}
  
- # 输出附件
+    # 输出通知[红包，转账]
+    {
+    'msgType': 'Note',
+    'text': '收到红包，请在手机上查看'} # 转账：老衲有理了向你转账0.01元
+    
+    # 输出名片
+    {
+    'msgType': 'Card',
+    'text': {'Alias': '',  # 内容为名片内容
+            'AttrStatus': 32,
+            'City': '不丹',
+            'Content': '',
+            'NickName': '《A》<span class="emoji emoji1f493"></span>l<span '
+                        'class="emoji emoji1f46f"></span>洋<span class="emoji '
+                        'emoji1f48b"></span>洋', # 昵称中包含emoji等
+            'OpCode': 0,
+            'Province': '不丹',
+            'QQNum': 0,
+            'Scene': 17,
+            'Sex': 2,
+            'Signature': '',
+            'Ticket': '',
+            'UserName': '@f42d57ad19989b1115eb59b8df7225058ccca959ca7ae21cf6b85b3db507ce1f',
+            'VerifyFlag': 0}}
  
- {'NickName': '老衲有理了',
- 'RemarkName': '',
- 'Username': '@d91be73042eeabac073d993c489161f0',
- 'fileSize': '120477',
- 'filename': '项目.mp',
- 'msgId': '9086062804589195742',
- 'msgType': 'Attachment',
- 'pyQuanPin': 'laonayoulile',
- 't': 1502425825,
- 'text': ''}
+        # 输出地址信息
+        {
+        'msgType': 'Map',
+        'text': '北京市朝阳区四惠京通商务楼(京通快速公路北)',
+        'url': 'http://apis.map.qq.com/uri/v1/geocoder?coord=39.910968,116.508298'}
+        
+        
+        # 输出分享
+        {
+        'msgType': 'Sharing',
+        'raw': '<?xml version="1.0"?>\n'  # 消息原格式
+                '<msg>\n'
+                '\t<appmsg appid="" sdkver="0">\n'
+                '\t\t<title>女子编程真的不如男？真相告诉我们这不过是直男癌的自嗨</title>\n'
+                '\t\t<des>Google真的反对了言论自由吗？</des>\n'
+                '\t\t<action>view</action>\n'
+                '\t\t<type>5</type>\n'
+                '\t\t<showtype>0</showtype>\n'
+                '\t\t<content />\n'
+                '\t\t'
+                '<url>http://mp.weixin.qq.com/s?__biz=MjM5MjM3NzQwMA==&amp;mid=2650984008&amp;idx=1&amp;sn=4839f594584ed03f2abbca996b231c00&amp;chksm=bd51511f8a26d809852552ba535494f2e2f81620cfa760e4801e27daf65eb255746021992e87&amp;mpshare=1&amp;scene=1&amp;srcid=0811vsKfCAiDojl7eE0Im3VE#rd</url>\n'
+                '\t\t<dataurl />\n'
+                '\t\t<lowurl />\n'
+                '\t\t<lowdataurl />\n'
+                '\t\t<recorditem><![CDATA[]]></recorditem>\n'
+                '\t\t'
+                '<thumburl>http://mmbiz.qpic.cn/mmbiz_png/EfY115GicZB5J7MOdXXdhRaLhV4Ttl1nD6HedgRXuaLK2SEhABZuVZp3675nmMCF725wYVvG4icHj4a1fm8xicJjw/300?wx_fmt=png&amp;wxfrom=1</thumburl>\n'
+                '\t\t<extinfo />\n'
+                '\t\t<sourceusername />\n'
+                '\t\t<sourcedisplayname />\n'
+                '\t\t<commenturl />\n'
+                '\t\t<appattach>\n'
+                '\t\t\t<totallen>0</totallen>\n'
+                '\t\t\t<attachid />\n'
+                '\t\t\t<emoticonmd5 />\n'
+                '\t\t\t<fileext />\n'
+                '\t\t\t<aeskey />\n'
+                '\t\t</appattach>\n'
+                '\t</appmsg>\n'
+                '\t<fromusername>Vicksml</fromusername>\n'
+                '\t<scene>0</scene>\n'
+                '\t<appinfo>\n'
+                '\t\t<version>1</version>\n'
+                '\t\t<appname></appname>\n'
+                '\t</appinfo>\n'
+                '\t<commenturl></commenturl>\n'
+                '</msg>\n',
+        'text': '女子编程真的不如男？真相告诉我们这不过是直男癌的自嗨', # 链接分享为文章标题
+        'url': 'http://mp.weixin.qq.com/s?__biz=MjM5MjM3NzQwMA==&amp;mid=2650984008&amp;idx=1&amp;sn=4839f594584ed03f2abbca996b231c00&amp;chksm=bd51511f8a26d809852552ba535494f2e2f81620cfa760e4801e27daf65eb255746021992e87&amp;mpshare=1&amp;scene=1&amp;srcid=0811vsKfCAiDojl7eE0Im3VE#rd'}  # 卡券等该参数为https://support.weixin.qq.com/cgi-bin*****
  
- # 输出通知[红包，转账]
- {'NickName': '老衲有理了',
- 'RemarkName': '',
- 'Username': '@d91be73042eeabac073d993c489161f0',
- 'msgId': '7184802347113302643',
- 'msgType': 'Note',
- 'pyQuanPin': 'laonayoulile',
- 't': 1502425874,
- 'text': '收到红包，请在手机上查看'} # 转账：老衲有理了向你转账0.01元
- 
- # 输出名片
- {'NickName': '老衲有理了',
- 'RemarkName': '',
- 'Username': '@d91be73042eeabac073d993c489161f0',
- 'msgId': '3085576819082358692',
- 'msgType': 'Card',
- 'pyQuanPin': 'laonayoulile',
- 't': 1502426591,
- 'text': {'Alias': '',  # 内容为字典
-          'AttrStatus': 32,
-          'City': '不丹',
-          'Content': '',
-          'NickName': '《A》<span class="emoji emoji1f493"></span>l<span '
-                      'class="emoji emoji1f46f"></span>洋<span class="emoji '
-                      'emoji1f48b"></span>洋', # 昵称中包含emoji等
-          'OpCode': 0,
-          'Province': '不丹',
-          'QQNum': 0,
-          'Scene': 17,
-          'Sex': 2,
-          'Signature': '',
-          'Ticket': '',
-          'UserName': '@f42d57ad19989b1115eb59b8df7225058ccca959ca7ae21cf6b85b3db507ce1f',
-          'VerifyFlag': 0}}
- 
-# 输出地址信息
-{'NickName': '老衲有理了',
- 'RemarkName': '',
- 'Username': '@d91be73042eeabac073d993c489161f0',
- 'msgId': '6492503751072481390',
- 'msgType': 'Map',
- 'pyQuanPin': 'laonayoulile',
- 't': 1502426867,
- 'text': '北京市朝阳区四惠京通商务楼(京通快速公路北)',
- 'url': 'http://apis.map.qq.com/uri/v1/geocoder?coord=39.910968,116.508298'}
- 
- 
- # 输出分享
- {'NickName': '老衲有理了',
- 'RemarkName': '',
- 'Username': '@d91be73042eeabac073d993c489161f0',
- 'msgId': '9043330962919561897',
- 'msgType': 'Sharing',
- 'pyQuanPin': 'laonayoulile',
- 'raw': '<?xml version="1.0"?>\n'  # 消息原格式
-        '<msg>\n'
-        '\t<appmsg appid="" sdkver="0">\n'
-        '\t\t<title>女子编程真的不如男？真相告诉我们这不过是直男癌的自嗨</title>\n'
-        '\t\t<des>Google真的反对了言论自由吗？</des>\n'
-        '\t\t<action>view</action>\n'
-        '\t\t<type>5</type>\n'
-        '\t\t<showtype>0</showtype>\n'
-        '\t\t<content />\n'
-        '\t\t'
-        '<url>http://mp.weixin.qq.com/s?__biz=MjM5MjM3NzQwMA==&amp;mid=2650984008&amp;idx=1&amp;sn=4839f594584ed03f2abbca996b231c00&amp;chksm=bd51511f8a26d809852552ba535494f2e2f81620cfa760e4801e27daf65eb255746021992e87&amp;mpshare=1&amp;scene=1&amp;srcid=0811vsKfCAiDojl7eE0Im3VE#rd</url>\n'
-        '\t\t<dataurl />\n'
-        '\t\t<lowurl />\n'
-        '\t\t<lowdataurl />\n'
-        '\t\t<recorditem><![CDATA[]]></recorditem>\n'
-        '\t\t'
-        '<thumburl>http://mmbiz.qpic.cn/mmbiz_png/EfY115GicZB5J7MOdXXdhRaLhV4Ttl1nD6HedgRXuaLK2SEhABZuVZp3675nmMCF725wYVvG4icHj4a1fm8xicJjw/300?wx_fmt=png&amp;wxfrom=1</thumburl>\n'
-        '\t\t<extinfo />\n'
-        '\t\t<sourceusername />\n'
-        '\t\t<sourcedisplayname />\n'
-        '\t\t<commenturl />\n'
-        '\t\t<appattach>\n'
-        '\t\t\t<totallen>0</totallen>\n'
-        '\t\t\t<attachid />\n'
-        '\t\t\t<emoticonmd5 />\n'
-        '\t\t\t<fileext />\n'
-        '\t\t\t<aeskey />\n'
-        '\t\t</appattach>\n'
-        '\t</appmsg>\n'
-        '\t<fromusername>Vicksml</fromusername>\n'
-        '\t<scene>0</scene>\n'
-        '\t<appinfo>\n'
-        '\t\t<version>1</version>\n'
-        '\t\t<appname></appname>\n'
-        '\t</appinfo>\n'
-        '\t<commenturl></commenturl>\n'
-        '</msg>\n',
- 't': 1502432423,
- 'text': '女子编程真的不如男？真相告诉我们这不过是直男癌的自嗨', # 链接分享为文章标题
- 'url': 'http://mp.weixin.qq.com/s?__biz=MjM5MjM3NzQwMA==&amp;mid=2650984008&amp;idx=1&amp;sn=4839f594584ed03f2abbca996b231c00&amp;chksm=bd51511f8a26d809852552ba535494f2e2f81620cfa760e4801e27daf65eb255746021992e87&amp;mpshare=1&amp;scene=1&amp;srcid=0811vsKfCAiDojl7eE0Im3VE#rd'}  # 卡券等该参数为https://support.weixin.qq.com/cgi-bin*****
- 
- # 输出群文本
-{'NickName': 'ooo',
- 'chatroomName': 'ooo',
- 'chatroomQuanPin': 'ooo',
- 'fromDisplayName': '1111',
- 'fromNickName': '老衲有理了',
- 'fromUserName': '@d91be73042eeabac073d993c489161f0',
- 'atSelf': False,
- 'isgroup': False,
- 'msgId': '6911839328836778181',
- 'msgType': 'Text',
- 'pyQuanPin': 'ooo',
- 't': 1502441016,
- 'text': '1',
- 'username': '@@32f23df58fb1da775c1c7811e43b848b3faacb5c144fc3ca2425530327f8368f'}
- 
- # 输出群图片
- {'NickName': 'ooo',
- 'atSelf': False,
- 'chatroomName': 'ooo',
- 'chatroomQuanPin': 'ooo',
- 'filename': '170811-170804.png',
- 'fromDisplayName': '1111',
- 'fromNickName': '老衲有理了',
- 'fromUserName': '@d91be73042eeabac073d993c489161f0',
- 'imgHeight': 150,
- 'imgWidth': 125,
- 'isgroup': True,
- 'msgId': '8714147927345821492',
- 'msgType': 'Picture',
- 'pyQuanPin': 'ooo',
- 't': 1502442484,
- 'text': '',
- 'username': '@@32f23df58fb1da775c1c7811e43b848b3faacb5c144fc3ca2425530327f8368f'}
-
- # 输出群视频
- {'NickName': 'ooo',
- 'atSelf': False,
- 'chatroomName': 'ooo',
- 'chatroomQuanPin': 'ooo',
- 'filename': '170811-171217.mp4',
- 'fromDisplayName': '1111',
- 'fromNickName': '老衲有理了',
- 'fromUserName': '@d91be73042eeabac073d993c489161f0',
- 'isgroup': True,
- 'msgId': '4281900100578744004',
- 'msgType': 'Video',
- 'playLength': 6,
- 'pyQuanPin': 'ooo',
- 't': 1502442737,
- 'text': '',
- 'username': '@@32f23df58fb1da775c1c7811e43b848b3faacb5c144fc3ca2425530327f8368f'}
- 
- # 输出群附件
- {'NickName': 'ooo',
- 'atSelf': False,
- 'chatroomName': 'ooo',
- 'chatroomQuanPin': 'ooo',
- 'fileSize': '120477',
- 'filename': '项目.mp',
- 'fromDisplayName': '1111',
- 'fromNickName': '老衲有理了',
- 'fromUserName': '@d91be73042eeabac073d993c489161f0',
- 'isgroup': True,
- 'msgId': '5398171740057203265',
- 'msgType': 'Attachment',
- 'pyQuanPin': 'ooo',
- 't': 1502442826,
- 'text': '',
- 'username': '@@32f23df58fb1da775c1c7811e43b848b3faacb5c144fc3ca2425530327f8368f'}
- 
- # 输出群语音
- {'NickName': 'ooo',
- 'atSelf': False,
- 'chatroomName': 'ooo',
- 'chatroomQuanPin': 'ooo',
- 'filename': '170811-171453.mp3',
- 'fromDisplayName': '1111',
- 'fromNickName': '老衲有理了',
- 'fromUserName': '@d91be73042eeabac073d993c489161f0',
- 'isgroup': True,
- 'msgId': '4167799924484047334',
- 'msgType': 'Recording',
- 'pyQuanPin': 'ooo',
- 't': 1502442893,
- 'text': '',
- 'username': '@@32f23df58fb1da775c1c7811e43b848b3faacb5c144fc3ca2425530327f8368f',
- 'voiceLength': 2700}
- 
- #输出群红包[通知]
- {'NickName': 'ooo',
- 'atSelf': False,
- 'chatroomName': 'ooo',
- 'chatroomQuanPin': 'ooo',
- 'fromDisplayName': 'weslack-te',
- 'fromNickName': 'weslack-test',
- 'fromUserName': '@2e20efade37766af8a172bf5ad6aad1135f3e79a70fd9df71f005d2ed52d9dee',
- 'isgroup': True,
- 'msgId': '7068968337958789656',
- 'msgType': 'Note',
- 'pyQuanPin': 'ooo',
- 't': 1502442944,
- 'text': '收到红包，请在手机上查看',
- 'username': '@@32f23df58fb1da775c1c7811e43b848b3faacb5c144fc3ca2425530327f8368f'}
- 
- #输出群名片
- {'NickName': 'ooo',
- 'atSelf': False,
- 'chatroomName': 'ooo',
- 'chatroomQuanPin': 'ooo',
- 'fromDisplayName': '1111',
- 'fromNickName': '老衲有理了',
- 'fromUserName': '@d91be73042eeabac073d993c489161f0',
- 'isgroup': True,
- 'msgId': '2698284051410254223',
- 'msgType': 'Card',
- 'pyQuanPin': 'ooo',
- 't': 1502443048,
- 'text': {'Alias': '',
-          'AttrStatus': 32,
-          'City': '中国',
-          'Content': '',
-          'NickName': '阿彪',
-          'OpCode': 0,
-          'Province': '江西',
-          'QQNum': 0,
-          'Scene': 17,
-          'Sex': 1,
-          'Signature': '',
-          'Ticket': '',
-          'UserName': '@ab03c03893ec0fdcc152ec5237d3350dd3b6e5cf71d15049b54a9891099e263b',
-          'VerifyFlag': 0},
- 'username': '@@32f23df58fb1da775c1c7811e43b848b3faacb5c144fc3ca2425530327f8368f'}
- 
- #输出群分享
- {'NickName': 'ooo',
- 'atSelf': False,
- 'chatroomName': 'ooo',
- 'chatroomQuanPin': 'ooo',
- 'fromDisplayName': '1111',
- 'fromNickName': '老衲有理了',
- 'fromUserName': '@d91be73042eeabac073d993c489161f0',
- 'isgroup': True,
- 'msgId': '5587398698639216514',
- 'msgType': 'Sharing',
- 'pyQuanPin': 'ooo',
- 'raw': '<?xml version="1.0"?>\n'
-        '<msg>\n'
-        '\t<appmsg appid="wx726f306f716ebe3f" sdkver="0">\n'
-        '\t\t<title>一个小学生的中年危机</title>\n'
-        '\t\t<des>一个小学生的中年危机</des>\n'
-        '\t\t<action>view</action>\n'
-        '\t\t<type>5</type>\n'
-        '\t\t<showtype>0</showtype>\n'
-        '\t\t<content />\n'
-        '\t\t<url>http://www.pingwest.com/?p=128682</url>\n'
-        '\t\t<dataurl />\n'
-        '\t\t<lowurl />\n'
-        '\t\t<lowdataurl />\n'
-        '\t\t<recorditem><![CDATA[]]></recorditem>\n'
-        '\t\t<thumburl />\n'
-        '\t\t<extinfo />\n'
-        '\t\t<sourceusername />\n'
-        '\t\t<sourcedisplayname />\n'
-        '\t\t<commenturl />\n'
-        '\t\t<appattach>\n'
-        '\t\t\t<totallen>0</totallen>\n'
-        '\t\t\t<attachid />\n'
-        '\t\t\t<emoticonmd5 />\n'
-        '\t\t\t<fileext />\n'
-        '\t\t\t'
-        '<cdnthumburl>30580201000451304f02010002040ff7803d02033d0af50204764c977b0204598d708f042d6175706170706d73675f323430666437313736646437646165305f313530323434313631353334325f383633320201000201000400</cdnthumburl>\n'
-        '\t\t\t<cdnthumblength>31649</cdnthumblength>\n'
-        '\t\t\t<cdnthumbheight>150</cdnthumbheight>\n'
-        '\t\t\t<cdnthumbwidth>290</cdnthumbwidth>\n'
-        '\t\t\t<aeskey>ede19cf132504961ba35c04e81735199</aeskey>\n'
-        '\t\t\t'
-        '<cdnthumbaeskey>ede19cf132504961ba35c04e81735199</cdnthumbaeskey>\n'
-        '\t\t\t<encryver>1</encryver>\n'
-        '\t\t</appattach>\n'
-        '\t</appmsg>\n'
-        '\t<fromusername>Vicksml</fromusername>\n'
-        '\t<scene>0</scene>\n'
-        '\t<appinfo>\n'
-        '\t\t<version>2</version>\n'
-        '\t\t<appname>PingWest品玩</appname>\n'
-        '\t</appinfo>\n'
-        '\t<commenturl></commenturl>\n'
-        '</msg>\n'
-        '\n',
- 't': 1502443079,
- 'text': '一个小学生的中年危机',
- 'url': 'http://www.pingwest.com/?p=128682',
- 'username': '@@32f23df58fb1da775c1c7811e43b848b3faacb5c144fc3ca2425530327f8368f'}
+    私聊文本:
+            {
+            "msgId": "6974765583220228797",
+            "Username": "@c3441b7e42ec52d5eef0a44c1101818e",
+            "text": "33333",
+            "RemarkName": "rrrrr",
+            "t": 1503284971,
+            "NickName": "老衲有理了",
+            "msgType": "Text",
+            "pyQuanPin": "laonayoulile"
+        }
+    私聊其他类型,同群聊
 
     以上body数据均经过fernet加密,解密方法为
     from cryptography.fernet import Fernet
@@ -470,12 +254,32 @@ wx_instance = wx(sn, secret, weslack_url)
 ### 搜索聊天历史
 
 ```python
-wx_instance.get_chatmsg(starttime=123, endtime=456, limit=100)
+wx_instance.get_chatmsg(starttime=None, endtime=None, limit=100):
 # starttime: 开始时间戳
 # endtime: 结束时间戳
 # limit: 返回数限制
 # 以上默认为最近1小时,100条数据
 
-
 返回格式为列表,列表内容与实时推送格式一致
 ```
+
+### 文件下载
+
+```python
+    dl_file(group_name, b64_filename, local_filename="", local_dir="tmp",
+            base_url="http://xxx"
+            ):
+    # group_name:消息体中username(临时id,@@开头)
+    # b64_filename: urlsafe_b64encode编码过的消息体中filenaem
+    # local_filename: 本地将要保存的文件名
+    # local_dir: 本地文件保存路径
+    # base_url: 下载服务器地址
+    demo:
+    # 以下代码见callback_server.py
+    # msg_d为json解码后的msg消息字典
+        if msg_d.get("msgType", "") in ["Picture", "Video", "Attachment"]:
+            dl_file(msg_d.get("Username").replace("@", ""),
+                    base64.urlsafe_b64encode(msg_d.get("filename", "").encode()).decode()
+                    )
+```
+
