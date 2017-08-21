@@ -14,27 +14,35 @@
 from weslack_sdk import wx
 # 引入库wx类
 
-wx_instance = wx(sn, secret)
+wx_instance = wx(sn, secret, weslack_url)
 # 实例化微信操作对象,
 # sn: weslack序列号,由weslack提供
 # secret: weslack密钥,由weslack提供
+# weslack_url: weslack服务器http地址,weslack提供
 
 ```
 
 ### 发送消息
 
 ```python
-    wx_instance.send_msg(wx_name, isgroup=True,
-                         remark_name="",
-                         text=None, filepath=None)
+    wx_instance.send_msg(wx_name=None, remark_name=None,                              isgroup=True, text=None,
+                        filepath=None)
     # wx_name 接收人昵称 | 非必需
-    # isgroup 是否为群 | 非必需,默认为真
     # remark_name 备注名称,群为机器人在群内的昵称| 非必需,与wx_name至少一
+    # isgroup 是否为群 | 非必需,默认为真
     # text 消息文本内容 | 非必需
     # filepath 文件路径 | 非必需, 但与text必需有一个
-
     # 文本消息可以和文件内容同时发送,weslack将根据文件头信息自动识别图片(gif, jpg, png),视频(mp4),和附件(其他)格式
     # 返回内容为是否发送成功"{errcode:0, errmsg:"成功"}"(str)
+    # 执行成功: 
+        {'BaseResponse':
+          {'ErrMsg': '请求成功', 'RawMsg': '请求成功', 'Ret': 0},
+          'LocalID': '15030534257827',
+          'MsgID': '1769472953213047700',
+           'errcode': 0,
+           'errmsg': '成功'}
+    # 异常:
+        {"errcode": -4, "errmsg": "text,filepath不能全部为空"}
 ```
 
 ### 获取好友信息
@@ -43,9 +51,9 @@ wx_instance = wx(sn, secret)
     wx_instance.get_friends_lst()
     # 获取好友昵称列表,失败返回[]
     wx_instance.friends
-    # 所有好友信息字典,以昵称为key,value(字典)中包含NickName(昵称),UserName(临时用户id),RemarkName(备注名),Signature(个性签名),Province(省份),City(城市),Sex(性别)等信息
-    wx_instance.get_friend(nick_name="",remark_name="")
-    # 返回好友信息,nick_name为昵称,remark_name为备注名称,无参数调用返回当前机器人信息
+    # 所有好友信息列表包含NickName(昵称),UserName(临时用户id),RemarkName(备注名),Signature(个性签名),Province(省份),City(城市),Sex(性别)等信息
+    wx_instance.get_friend(nick_name="", remark_name="", username="")
+    # 返回好友信息列表，重复昵称等列表数不为1,nick_name为昵称,remark_name为备注名称,无参数调用返回空列表
 ```
 
 ### 获取群聊信息
